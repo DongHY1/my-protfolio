@@ -9,8 +9,10 @@ import {
   Mesh,
   DoubleSide,
   DirectionalLight,
-  FlatShading,
+  FlatShading
 } from "three";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 // 创建GUI
 const gui = new dat.GUI();
 const world = {
@@ -45,6 +47,8 @@ function generatePlane() {
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
 const renderer = new WebGLRenderer();
+
+new OrbitControls(camera,renderer.domElement)
 const planeGeometry = new PlaneGeometry(5, 10, 10, 10);
 // 双层平面
 const planeMaterial = new MeshPhongMaterial({
@@ -60,8 +64,11 @@ scene.add(planeMesh);
 camera.position.z = 5;
 
 const light = new DirectionalLight(0xffffff, 1);
-light.position.set(0, -1, 1);
+light.position.set(0, 0, 1);
 scene.add(light);
+const backlight = new DirectionalLight(0xffffff, 1);
+backlight.position.set(0, 0, -1);
+scene.add(backlight);
 const { array } = planeMesh.geometry.attributes.position;
 for (let i = 0; i < array.length; i += 3) {
   const x = array[i];
